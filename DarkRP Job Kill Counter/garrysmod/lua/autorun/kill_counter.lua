@@ -1,5 +1,7 @@
 
 --Note: In this case, the team used for the kill counter will be called "AttackerTeam"
+--This script can also be used for when it's needed to reset the kill counter
+
 hook.Add( "PlayerDeath", "killcounter", function( victim, inflictor, attacker ) -- Counts the player's kills, resets upon death.
     if team.GetName(attacker:Team()) == "AttackerTeam'" then 
         attacker:SetNWInt("kills", attacker:GetNWInt("kills", 0) + 1)
@@ -9,6 +11,14 @@ hook.Add( "PlayerDeath", "killcounter", function( victim, inflictor, attacker ) 
 end )
 
 ply = LocalPlayer() -- Local player, may return errors if used on an empty server.
+
+hook.Add( "PlayerSay", "killcount", function( ply, text )
+	if text == "/resetkills" then 
+        ply:SetNWInt("kills", 0)
+        return ""
+    end 
+end )
+
 
 hook.Add( "HUDPaint", "killcounting", function() -- Hud Painting function, generates text displaying your kills. Modifiable position.
      if not(team.GetName(ply:Team()) == "AttackerTeam") then return end 
